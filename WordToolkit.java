@@ -23,7 +23,7 @@
  *  alphaOrder returns true when the given
  *  word (a String) has letters in alpha order
  *  (false otherwise).
- *  @author Your Name Here
+ *  @author Sankalp Agrawal
  *  @version 1.0
  *  @since 9/17/2015
  */
@@ -47,6 +47,7 @@ public class WordToolkit
                 System.out.print("\nFrom the list above, words with letters in alpha order:");
                 for(int i = 0; i < word.length; i++)
                 {
+
                     if(alphaOrder(word[i]))
                     {
                         if(count % 5 == 0)
@@ -79,18 +80,19 @@ public class WordToolkit
      *
      *  @return  A String of the letters
      */
-    public static String getInput ( )
+    public static String getInput ()
     {
     	boolean badInput = true;
     	String input = "";
-    	while(badInput) {
-    		input = Prompt.getString("Please enter a list of characters from 3 to 12 letters long with no spaces: ", 3, 12);
+    	/*while(badInput) {
+    		input = Prompt.getString("Please enter a list of characters from 3 to 12 letters long with no spaces: ");
     		for(int i = 0; i < input.length(); i++) {
     			if(input.charAt(i) > 65 && input.charAt(i) < 122) {
     				badInput = false;
     			}
     		}
-    	}
+    	}*/
+        input = Prompt.getString("Please enter a list of characters from 3 to 12 letters long with no spaces: ");
         return input;
     }
 	
@@ -104,6 +106,7 @@ public class WordToolkit
     {		
         int counter = 0;
         boolean counterFound = false;
+        String [] word = {};
         String currentLine = "";
         for(int i = 0; i < 2; i++) {
         	Scanner scan = OpenFile.openToRead("Words.txt");
@@ -113,14 +116,14 @@ public class WordToolkit
         			if(!counterFound) {
         				counter++;
         			} else {
-        				words[counter] = currentLine;
+        				word[counter] = currentLine;
         				counter++;
         			}
         		}
         	}
 
         	if(!counterFound) {
-        		String [] word = new String[counter];	
+        		word = new String[counter];	
         	}
         	counterFound = true;
         	counter = 0;
@@ -140,11 +143,12 @@ public class WordToolkit
     	String temp = word;
     	boolean letterMatch = false;
 
-    	for(int i = 0; i < letters.length; i++) {
+    	for(int i = 0; i < letters.length(); i++) {
     		letterMatch = false;
-    		for(int j = 0; j < word.length; j++) {
-    			if(temp.charAt(i) == word.charAt(j)) {
+    		for(int j = 0; j < temp.length(); j++) {
+    			if(letters.charAt(i) == temp.charAt(j)) {
     				letterMatch = true;
+                    temp = temp.substring(0,j) + temp.substring(j+1);
     			}
     		}
     		if(!letterMatch) {
@@ -162,9 +166,9 @@ public class WordToolkit
     public static void printWords(String [] word)
     {
     	System.out.println("\n\n\n");
-    	int counter = 0;
+        int counter = 0;
         for(int i = 0; i < word.length; i++) {
-        	System.out.printf("%s, " counter);
+        	System.out.printf("%20s, ", word[i]);
         	counter++;
         	if(counter%5 == 0) {
         		System.out.println();
@@ -189,8 +193,8 @@ public class WordToolkit
     	for(int i = 0; i < word.length; i++) {
     		currentWord = word[i];
             currentWord = currentWord.toLowerCase();
-    		for(int j = 0; j < currentWord.length; j++) {
-    			currentPoints += scoretable[currentWord[j] - 97];
+    		for(int j = 0; j < currentWord.length(); j++) {
+    			currentPoints += scoretable[currentWord.charAt(j) - 97];
     		}
             if(currentPoints > currentTopScore) {
                 currentTopScore = currentPoints;
@@ -211,7 +215,12 @@ public class WordToolkit
      */
     public static int getScore(String word, int [] scoretable)
     {
-        return 0;
+        int currentScore = 0;
+
+        for(int i = 0; i < word.length(); i++) {
+            currentScore += scoretable[word.charAt(i) - 97];
+        }
+        return currentScore;
     }
 	
     /**
@@ -222,7 +231,27 @@ public class WordToolkit
      */
     public static boolean isWordInList(String wordToMatch) 
     {
-        return false;
+        String currentWord = "";
+        String temp = "";
+        boolean matched = false;
+        Scanner scan = OpenFile.openToRead("Words.txt");
+        while(scan.hasNext()) {
+            currentWord = scan.nextLine();
+            temp = currentWord;
+            for(int i = 0; i < wordToMatch.length(); i++) {
+                matched = false;
+                for(int j = 0; j < temp.length(); j++) {
+                    if(wordToMatch.charAt(i) == temp.charAt(j)) {
+                        temp = temp.substring(0,j) + temp.substring(j+1);
+                        matched = true;
+                    }
+                }
+                if(!matched) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 	
     /**
@@ -233,6 +262,14 @@ public class WordToolkit
      */
     public static boolean alphaOrder(String word)
     {
+        int currentLetterValue = 0;
+        for(int i = 0; i < word.length(); i++) {
+            if(word.toLowerCase().charAt(i) >= currentLetterValue) {
+                currentLetterValue = (int)word.toLowerCase().charAt(i);
+            } else {
+                return false;
+            }
+        }
         return true;
     }
 }

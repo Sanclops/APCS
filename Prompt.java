@@ -77,5 +77,3 @@ public class Prompt
 		return value;
 	}
 }
-
-Back to APCS Main Page
