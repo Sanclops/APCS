@@ -81,7 +81,17 @@ public class WordToolkit
      */
     public static String getInput ( )
     {
-        return "";
+    	boolean badInput = true;
+    	String input = "";
+    	while(badInput) {
+    		input = Prompt.getString("Please enter a list of characters from 3 to 12 letters long with no spaces: ", 3, 12);
+    		for(int i = 0; i < input.length(); i++) {
+    			if(input.charAt(i) > 65 && input.charAt(i) < 122) {
+    				badInput = false;
+    			}
+    		}
+    	}
+        return input;
     }
 	
     /**
@@ -92,8 +102,29 @@ public class WordToolkit
      */
     public static String [] findAllWords(String letters)
     {		
-        int counter = 10;
-        String [] word = new String[counter];
+        int counter = 0;
+        boolean counterFound = false;
+        String currentLine = "";
+        for(int i = 0; i < 2; i++) {
+        	Scanner scan = OpenFile.openToRead("Words.txt");
+        	while(scan.hasNext()) {
+        		currentLine = scan.nextLine();
+        		if(matchFound(currentLine, letters)) {
+        			if(!counterFound) {
+        				counter++;
+        			} else {
+        				words[counter] = currentLine;
+        				counter++;
+        			}
+        		}
+        	}
+
+        	if(!counterFound) {
+        		String [] word = new String[counter];	
+        	}
+        	counterFound = true;
+        	counter = 0;
+        }
         return word;
     }
 	
@@ -106,6 +137,7 @@ public class WordToolkit
      */
     public static boolean matchFound(String word, String letters) 
     {
+    	
         return true;
     }
 	
