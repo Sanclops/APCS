@@ -137,7 +137,20 @@ public class WordToolkit
      */
     public static boolean matchFound(String word, String letters) 
     {
-    	
+    	String temp = word;
+    	boolean letterMatch = false;
+
+    	for(int i = 0; i < letters.length; i++) {
+    		letterMatch = false;
+    		for(int j = 0; j < word.length; j++) {
+    			if(temp.charAt(i) == word.charAt(j)) {
+    				letterMatch = true;
+    			}
+    		}
+    		if(!letterMatch) {
+    			return false;
+    		}
+    	}
         return true;
     }
 	
@@ -148,7 +161,16 @@ public class WordToolkit
      */
     public static void printWords(String [] word)
     {
-        
+    	System.out.println("\n\n\n");
+    	int counter = 0;
+        for(int i = 0; i < word.length; i++) {
+        	System.out.printf("%s, " counter);
+        	counter++;
+        	if(counter%5 == 0) {
+        		System.out.println();
+        	}
+        }
+        System.out.println("\n\n\n");
     }
 	
     /**
@@ -160,7 +182,24 @@ public class WordToolkit
      */
     public static String bestWord(String [] word, int [] scoretable)
     {
-        return "hello";
+    	String currentWord = "";
+        int currentPoints = 0;
+    	String currentBestWord = "";
+    	int currentTopScore = 0;
+    	for(int i = 0; i < word.length; i++) {
+    		currentWord = word[i];
+            currentWord = currentWord.toLowerCase();
+    		for(int j = 0; j < currentWord.length; j++) {
+    			currentPoints += scoretable[currentWord[j] - 97];
+    		}
+            if(currentPoints > currentTopScore) {
+                currentTopScore = currentPoints;
+                currentBestWord = currentWord;
+            }
+            currentTopScore = 0;
+            currentWord = "";
+    	}
+        return currentBestWord;
     }
 	
     /**
@@ -326,5 +365,5 @@ GOODBYE!
 
 
 C:\Java\Words>
-
+//LOL
 */

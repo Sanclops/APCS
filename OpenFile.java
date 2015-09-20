@@ -9,6 +9,7 @@ public class OpenFile {
 	public static Scanner OpenToRead(String fileName) {
 		Scanner scan = new Scanner(new File(fileName));
 		return scan;
+		
 	}
 
 }
