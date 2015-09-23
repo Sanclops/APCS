@@ -140,21 +140,24 @@ public class WordToolkit
      */
     public static boolean matchFound(String word, String letters) 
     {
-    	String temp = word;
+    	String temp = letters;
     	boolean letterMatch = false;
 
-    	for(int i = 0; i < letters.length(); i++) {
-    		letterMatch = false;
-    		for(int j = 0; j < temp.length(); j++) {
-    			if(letters.charAt(i) == temp.charAt(j)) {
-    				letterMatch = true;
-                    temp = temp.substring(0,j) + temp.substring(j+1);
-    			}
-    		}
-    		if(!letterMatch) {
-    			return false;
-    		}
-    	}
+        for(int i = 0; i < word.length(); i++) {
+            letterMatch = false;
+            for(int j = 0; j < temp.length(); j++) {
+                if(temp.charAt(j) == word.charAt(i)) {
+                    if(!letterMatch) {
+                        temp = temp.substring(0, j) + temp.substring(j + 1);
+                    }
+                    letterMatch = true;
+                }
+            }
+            if(!letterMatch) {
+                return false;
+            }
+        }
+    	
         return true;
     }
 	
@@ -168,7 +171,7 @@ public class WordToolkit
     	System.out.println("\n\n\n");
         int counter = 0;
         for(int i = 0; i < word.length; i++) {
-        	System.out.printf("%20s, ", word[i]);
+        	System.out.printf("%20s", word[i]);
         	counter++;
         	if(counter%5 == 0) {
         		System.out.println();
@@ -200,7 +203,7 @@ public class WordToolkit
                 currentTopScore = currentPoints;
                 currentBestWord = currentWord;
             }
-            currentTopScore = 0;
+            currentPoints = 0;
             currentWord = "";
     	}
         return currentBestWord;
@@ -216,7 +219,7 @@ public class WordToolkit
     public static int getScore(String word, int [] scoretable)
     {
         int currentScore = 0;
-
+        word = word.toLowerCase();
         for(int i = 0; i < word.length(); i++) {
             currentScore += scoretable[word.charAt(i) - 97];
         }
